@@ -53,3 +53,19 @@ let ``Given player: 40 - other: 30 when other wins then score is correct``
     let current = { current with OtherPlayerPoint = Thirty }
     let actual = scoreWhenForty current (other current.Player)
     Deuce =! actual
+
+[<Property>]
+let ``Given player: 40 - other: < 30 when other wins then score is correct``
+    (current : FortyData) =
+
+    let opp = Gen.elements [Love; Fifteen] |> Arb.fromGen
+    Prop.forAll opp (fun otherPlayerPoint ->
+        let current = { current with OtherPlayerPoint = otherPlayerPoint }
+
+        let actual = scoreWhenForty current (other current.Player)
+
+        let expected =
+            incrementPoint current.OtherPlayerPoint
+            |> Option.map (fun np -> { current with OtherPlayerPoint = np })
+            |> Option.map Forty
+        expected =! Some actual)

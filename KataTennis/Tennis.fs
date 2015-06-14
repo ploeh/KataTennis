@@ -15,6 +15,11 @@ type Score =
 
 let other = function PlayerOne -> PlayerTwo | PlayerTwo -> PlayerOne
 
+let incrementPoint = function
+    | Love -> Some Fifteen
+    | Fifteen -> Some Thirty
+    | Thirty -> None
+
 // Transitions
 
 let scoreWhenGame winner = Game winner
@@ -29,4 +34,7 @@ let scoreWhenDeuce winner = Advantage winner
 let scoreWhenForty current winner =
     if current.Player = winner
     then Game winner
-    else Deuce
+    else
+        match incrementPoint current.OtherPlayerPoint with
+        | Some p -> Forty { current with OtherPlayerPoint = p }
+        | None -> Deuce
