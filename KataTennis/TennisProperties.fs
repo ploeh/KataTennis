@@ -151,3 +151,74 @@ let ``score Game returns correct result`` gameWinner pseudoWinner =
 
     let expected = scoreWhenGame gameWinner
     expected =! actual
+
+let isPoints =    function Points _    -> true | _ -> false
+let isForty =     function Forty  _    -> true | _ -> false
+let isDeuce =     function Deuce       -> true | _ -> false
+let isAdvantage = function Advantage _ -> true | _ -> false
+let isGame =      function Game _      -> true | _ -> false
+
+[<Property>]
+let ``A game with less then four balls isn't over`` (wins : Player list) =
+    let actual : Score = wins |> Seq.truncate 3 |> scoreSeq
+    test <@ actual |> (not << isGame) @>
+
+[<Property>]
+let ``A game with less than six balls can't be Deuce`` (wins : Player list) =
+    let actual = wins |> Seq.truncate 5 |> scoreSeq
+    test <@ actual |> (not << isDeuce) @>
+
+[<Property>]
+let ``A game with less than seven balls can't have any player with advantage``
+    (wins : Player list) =
+
+    let actual = wins |> Seq.truncate 6 |> scoreSeq
+    test <@ actual |> (not << isAdvantage) @>
+
+let genListLongerThan n =
+    let playerGen = Arb.generate<Player>
+    let nPlayers = playerGen |> Gen.listOfLength (n + 1)
+    let morePlayers = playerGen |> Gen.listOf
+    Gen.map2 (@) nPlayers morePlayers
+
+[<Property>]
+let ``A game with more than four balls can't be Points`` () =
+    let moreThanFourBalls = genListLongerThan 4 |> Arb.fromGen
+    Prop.forAll moreThanFourBalls (fun wins ->
+
+        let actual = scoreSeq wins
+
+        test <@ actual |> (not << isPoints) @>)
+
+[<Property>]
+let ``A game with more than five balls can't be Forty`` () =
+    let moreThanFiveBalls = genListLongerThan 5 |> Arb.fromGen
+    Prop.forAll moreThanFiveBalls (fun wins ->
+
+        let actual = scoreSeq wins
+
+        test <@ actual |> (not << isForty) @>)
+
+[<Property>]
+let ``A game where one player wins all balls is over in four balls`` (player) =
+    let fourWins = Seq.init 4 (fun _ -> player)
+    
+    let actual = scoreSeq fourWins
+
+    let expected = Game player
+    expected =! actual
+
+[<Property>]
+let ``A game where players alternate never ends`` firstWinner =
+    let alternateWins = 
+        firstWinner
+        |> Gen.constant
+        |> Gen.map (fun p -> [p; other p])
+        |> Gen.listOf
+        |> Gen.map List.concat
+        |> Arb.fromGen
+    Prop.forAll alternateWins (fun wins ->
+        
+        let actual = scoreSeq wins
+        
+        test <@ actual |> (not << isGame) @>)

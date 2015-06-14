@@ -67,3 +67,5 @@ let score current winner =
     | Game g -> scoreWhenGame g
 
 let newGame = Points { PlayerOnePoint = Love; PlayerTwoPoint = Love }
+
+let scoreSeq wins = Seq.fold score newGame wins
