@@ -23,3 +23,5 @@ let scoreWhenAdvantage advantagedPlayer winner =
     if advantagedPlayer = winner
     then Game winner
     else Deuce
+
+let scoreWhenDeuce winner = Advantage winner

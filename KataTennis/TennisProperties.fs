@@ -27,3 +27,12 @@ let ``Given advantage when other player wins then score is correct``
 
     let actual = scoreWhenAdvantage advantagedPlayer (other advantagedPlayer)
     Deuce =! actual
+
+[<Property>]
+let ``Given deuce when player wins then score is correct``
+    (winner : Player) =
+
+    let actual : Score = scoreWhenDeuce winner
+
+    let expected = Advantage winner
+    expected =! actual
