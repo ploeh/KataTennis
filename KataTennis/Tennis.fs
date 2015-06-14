@@ -65,3 +65,5 @@ let score current winner =
     | Deuce -> scoreWhenDeuce winner
     | Advantage a -> scoreWhenAdvantage a winner
     | Game g -> scoreWhenGame g
+
+let newGame = Points { PlayerOnePoint = Love; PlayerTwoPoint = Love }
