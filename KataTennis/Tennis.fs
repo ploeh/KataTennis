@@ -13,8 +13,13 @@ type Score =
 | Advantage of Player
 | Game of Player
 
+let other = function PlayerOne -> PlayerTwo | PlayerTwo -> PlayerOne
+
 // Transitions
 
 let scoreWhenGame winner = Game winner
 
-let scoreWhenAdvantage advantagedPlayer winner = Game advantagedPlayer
+let scoreWhenAdvantage advantagedPlayer winner =
+    if advantagedPlayer = winner
+    then Game winner
+    else Deuce
