@@ -55,3 +55,13 @@ let scoreWhenPoints current winner =
     | None -> Forty {
         Player = winner
         OtherPlayerPoint = pointFor (other winner) current }
+
+// State machine
+
+let score current winner = 
+    match current with
+    | Points p -> scoreWhenPoints p winner
+    | Forty f -> scoreWhenForty f winner
+    | Deuce -> scoreWhenDeuce winner
+    | Advantage a -> scoreWhenAdvantage a winner
+    | Game g -> scoreWhenGame g

@@ -103,3 +103,51 @@ let ``Given player: <30 when player wins then score is correct``
             expectedPlayerPoint
             |> Option.map (fun p -> current |> pointTo winner p |> Points)
         expected =! Some actual)
+
+[<Property>]
+let ``score returns a value`` (current : Score) (winner : Player) =
+    let actual : Score = score current winner
+    true // Didn't crash - this is mostly a boundary condition test
+
+// The following five properties aren't particularly useful, because they
+// mainly reproduce the implementation details of the score function. I've
+// added them here in order to demonstrate that this can be done, but unless
+// you're in an extremely fault-sensitive setting (medical equipment, guidance
+// software for vehicles, etc.) they most likely add little to negative value.
+// After all, the tests contain more code than the implementation itself.
+// Related: http://blog.ploeh.dk/2013/04/02/why-trust-tests
+
+[<Property>]
+let ``score Points returns correct result`` points winner =
+    let actual = score (Points points) winner
+
+    let expected = scoreWhenPoints points winner
+    expected =! actual
+
+[<Property>]
+let ``score Forty returns correct result`` forty winner =
+    let actual = score (Forty forty) winner
+
+    let expected = scoreWhenForty forty winner
+    expected =! actual
+
+[<Property>]
+let ``score Deuce returns correct result`` winner =
+    let actual = score Deuce winner
+
+    let expected = scoreWhenDeuce winner
+    expected =! actual
+
+[<Property>]
+let ``score Advantage returns correct result`` advantagedPlayer winner =
+    let actual = score (Advantage advantagedPlayer) winner
+
+    let expected = scoreWhenAdvantage advantagedPlayer winner
+    expected =! actual
+
+[<Property>]
+let ``score Game returns correct result`` gameWinner pseudoWinner =
+    let actual = score (Game gameWinner) pseudoWinner
+
+    let expected = scoreWhenGame gameWinner
+    expected =! actual
