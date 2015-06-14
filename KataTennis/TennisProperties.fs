@@ -83,3 +83,23 @@ let ``Given player: 30 when player wins then score is correct``
         Player = winner
         OtherPlayerPoint = pointFor (other winner) current }
     expected =! actual
+
+[<Property>]
+let ``Given player: <30 when player wins then score is correct``
+    (current : PointsData)
+    (winner : Player) =
+
+    let pp = Gen.elements [Love; Fifteen] |> Arb.fromGen
+    Prop.forAll pp (fun playerPoint ->
+        let current = pointTo winner playerPoint current
+
+        let actual = scoreWhenPoints current winner
+
+        let expectedPlayerPoint =
+            current
+            |> pointFor winner
+            |> incrementPoint
+        let expected =
+            expectedPlayerPoint
+            |> Option.map (fun p -> current |> pointTo winner p |> Points)
+        expected =! Some actual)

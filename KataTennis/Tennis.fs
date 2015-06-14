@@ -49,6 +49,9 @@ let scoreWhenForty current winner =
         | Some p -> Forty { current with OtherPlayerPoint = p }
         | None -> Deuce
 
-let scoreWhenPoints current winner = Forty {
-    Player = winner
-    OtherPlayerPoint = pointFor (other winner) current }
+let scoreWhenPoints current winner =
+    match pointFor winner current |> incrementPoint with
+    | Some np -> pointTo winner np current |> Points
+    | None -> Forty {
+        Player = winner
+        OtherPlayerPoint = pointFor (other winner) current }
