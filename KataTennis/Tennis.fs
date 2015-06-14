@@ -26,4 +26,7 @@ let scoreWhenAdvantage advantagedPlayer winner =
 
 let scoreWhenDeuce winner = Advantage winner
 
-let scoreWhenForty current winner = Game winner
+let scoreWhenForty current winner =
+    if current.Player = winner
+    then Game winner
+    else Deuce

@@ -45,3 +45,11 @@ let ``Given player: 40 when player wins then score is correct``
 
     let expected = Game current.Player
     expected =! actual
+
+[<Property>]
+let ``Given player: 40 - other: 30 when other wins then score is correct``
+    (current : FortyData) =
+
+    let current = { current with OtherPlayerPoint = Thirty }
+    let actual = scoreWhenForty current (other current.Player)
+    Deuce =! actual
