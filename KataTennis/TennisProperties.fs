@@ -36,3 +36,12 @@ let ``Given deuce when player wins then score is correct``
 
     let expected = Advantage winner
     expected =! actual
+
+[<Property>]
+let ``Given player: 40 when player wins then score is correct``
+    (current : FortyData) =
+
+    let actual = scoreWhenForty current current.Player
+
+    let expected = Game current.Player
+    expected =! actual
