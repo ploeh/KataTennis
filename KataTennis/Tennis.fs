@@ -69,3 +69,34 @@ let score current winner =
 let newGame = Points { PlayerOnePoint = Love; PlayerTwoPoint = Love }
 
 let scoreSeq wins = Seq.fold score newGame wins
+
+// Formatting
+
+let pointToString = function
+    | Love -> "love"
+    | Fifteen -> "15"
+    | Thirty -> "30"
+
+let scoreToString playerOneName playerTwoName = function
+    | Points p ->
+        if p.PlayerOnePoint = p.PlayerTwoPoint
+        then p.PlayerOnePoint |> pointToString |> sprintf "%s-all"
+        else
+            sprintf
+                "%s-%s"
+                (pointToString p.PlayerOnePoint)
+                (pointToString p.PlayerTwoPoint)
+    | Forty f ->
+        let other = pointToString f.OtherPlayerPoint
+        if f.Player = PlayerOne
+        then sprintf "40-%s" other
+        else sprintf "%s-40" other
+    | Deuce -> "deuce"
+    | Advantage a ->
+        if a = PlayerOne
+        then sprintf "advantage %s" playerOneName
+        else sprintf "advantage %s" playerTwoName
+    | Game g ->
+        if g = PlayerOne
+        then sprintf "game %s" playerOneName
+        else sprintf "game %s" playerTwoName
