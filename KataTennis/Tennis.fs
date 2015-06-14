@@ -16,3 +16,5 @@ type Score =
 // Transitions
 
 let scoreWhenGame winner = Game winner
+
+let scoreWhenAdvantage advantagedPlayer winner = Game advantagedPlayer
