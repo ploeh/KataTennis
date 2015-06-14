@@ -69,3 +69,17 @@ let ``Given player: 40 - other: < 30 when other wins then score is correct``
             |> Option.map (fun np -> { current with OtherPlayerPoint = np })
             |> Option.map Forty
         expected =! Some actual)
+
+[<Property>]
+let ``Given player: 30 when player wins then score is correct``
+    (current : PointsData)
+    (winner : Player) = 
+
+    let current = (Thirty |> pointTo winner) current
+
+    let actual : Score = scoreWhenPoints current winner
+
+    let expected = Forty {
+        Player = winner
+        OtherPlayerPoint = pointFor (other winner) current }
+    expected =! actual
