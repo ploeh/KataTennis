@@ -53,6 +53,7 @@
     <Content Include="app.config" />
     <Compile Include="Tennis.fs" />
     <Compile Include="TennisProperties.fs" />
+    <None Include="Usage.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsCheck">
