@@ -222,3 +222,9 @@ let ``A game where players alternate never ends`` firstWinner =
         let actual = scoreSeq wins
         
         test <@ actual |> (not << isGame) @>)
+
+[<Property>]
+let ``other returns a different player`` player = player <>! other player
+
+[<Property>]
+let ``other other returns same player`` player = player =! other (other player)
