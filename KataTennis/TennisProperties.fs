@@ -59,7 +59,7 @@ let ``Given player: 40 - other: < 30 when other wins then score is correct``
     (current : FortyData) =
 
     let opp = Gen.elements [Love; Fifteen] |> Arb.fromGen
-    Prop.forAll opp (fun otherPlayerPoint ->
+    Prop.forAll opp <| fun otherPlayerPoint ->
         let current = { current with OtherPlayerPoint = otherPlayerPoint }
 
         let actual = scoreWhenForty current (other current.Player)
@@ -68,7 +68,7 @@ let ``Given player: 40 - other: < 30 when other wins then score is correct``
             incrementPoint current.OtherPlayerPoint
             |> Option.map (fun np -> { current with OtherPlayerPoint = np })
             |> Option.map Forty
-        expected =! Some actual)
+        expected =! Some actual
 
 [<Property>]
 let ``Given player: 30 when player wins then score is correct``
@@ -90,7 +90,7 @@ let ``Given player: <30 when player wins then score is correct``
     (winner : Player) =
 
     let pp = Gen.elements [Love; Fifteen] |> Arb.fromGen
-    Prop.forAll pp (fun playerPoint ->
+    Prop.forAll pp <| fun playerPoint ->
         let current = pointTo winner playerPoint current
 
         let actual = scoreWhenPoints current winner
@@ -102,7 +102,7 @@ let ``Given player: <30 when player wins then score is correct``
         let expected =
             expectedPlayerPoint
             |> Option.map (fun p -> current |> pointTo winner p |> Points)
-        expected =! Some actual)
+        expected =! Some actual
 
 [<Property>]
 let ``score returns a value`` (current : Score) (winner : Player) =
@@ -184,20 +184,20 @@ let genListLongerThan n =
 [<Property>]
 let ``A game with more than four balls can't be Points`` () =
     let moreThanFourBalls = genListLongerThan 4 |> Arb.fromGen
-    Prop.forAll moreThanFourBalls (fun wins ->
+    Prop.forAll moreThanFourBalls <| fun wins ->
 
         let actual = scoreSeq wins
 
-        test <@ actual |> (not << isPoints) @>)
+        test <@ actual |> (not << isPoints) @>
 
 [<Property>]
 let ``A game with more than five balls can't be Forty`` () =
     let moreThanFiveBalls = genListLongerThan 5 |> Arb.fromGen
-    Prop.forAll moreThanFiveBalls (fun wins ->
+    Prop.forAll moreThanFiveBalls <| fun wins ->
 
         let actual = scoreSeq wins
 
-        test <@ actual |> (not << isForty) @>)
+        test <@ actual |> (not << isForty) @>
 
 [<Property>]
 let ``A game where one player wins all balls is over in four balls`` (player) =
@@ -217,11 +217,11 @@ let ``A game where players alternate never ends`` firstWinner =
         |> Gen.listOf
         |> Gen.map List.concat
         |> Arb.fromGen
-    Prop.forAll alternateWins (fun wins ->
+    Prop.forAll alternateWins <| fun wins ->
         
         let actual = scoreSeq wins
         
-        test <@ actual |> (not << isGame) @>)
+        test <@ actual |> (not << isGame) @>
 
 [<Property>]
 let ``other returns a different player`` player = player <>! other player
