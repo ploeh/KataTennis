@@ -1,0 +1,18 @@
+FRAMEWORK: >= NET451
+NUGET
+  remote: http://api.nuget.org/v3/index.json
+    FAKE (4.9.3)
+    FsCheck (2.2.2)
+      FSharp.Core (>= 3.1.2.5)
+    FsCheck.Xunit (2.2.2)
+      FsCheck (>= 2.2.2)
+      xunit.extensibility.execution (>= 2.1 < 2.2)
+    FSharp.Core (3.1.2.5)
+    Unquote (3.0)
+    xunit.abstractions (2.0)
+    xunit.extensibility.core (2.1)
+      xunit.abstractions (2.0)
+    xunit.extensibility.execution (2.1)
+      xunit.extensibility.core (2.1)
+    xunit.runner.console (2.1)
+    xunit.runner.visualstudio (2.1.0) - version_in_path: true

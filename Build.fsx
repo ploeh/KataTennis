@@ -1,13 +1,17 @@
-#r @"packages/FAKE.4.9.3/tools/FakeLib.dll"
+#r @"packages/FAKE/tools/FakeLib.dll"
 
 open Fake
 open Fake.Testing
 
-Target "Clean" (fun _ ->
+Target "ResetAll" (fun _ ->
     directExec (fun info ->
         info.FileName <- "git"
         info.Arguments <- "clean -xdf")
-    |> ignore)
+    ()|> ignore)
+
+Target "Clean" (fun _ ->
+    CleanDirs ["KataTennis/bin"; "KataTennis/obj"]
+)
 
 Target "Build" (fun _ ->
     !! "KataTennis.sln"

@@ -1,0 +1,13 @@
+source https://api.nuget.org/v3/index.json
+framework >= net451
+
+nuget FAKE
+nuget FsCheck
+nuget FsCheck.Xunit
+nuget FSharp.Core
+nuget Unquote
+nuget xunit.abstractions
+nuget xunit.extensibility.core
+nuget xunit.extensibility.execution
+nuget xunit.runner.console
+nuget xunit.runner.visualstudio >= 2.0 version_in_path: true

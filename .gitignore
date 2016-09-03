@@ -13,6 +13,9 @@ TestResults
 *.user
 *.sln.docstates
 
+# Downloads
+packages/
+
 # Build results
 [Dd]ebug/
 [Rr]elease/
@@ -36,6 +39,9 @@ x64/
 *.vspscc
 *.vssscc
 .builds
+*.exe
+.fake/
+.paket/
 
 # Visual C++ cache files
 ipch/
